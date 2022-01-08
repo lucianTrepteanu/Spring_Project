@@ -68,7 +68,7 @@ public class UserController {
 
     @PostMapping("/users/save")
     public String saveUser(User user, RedirectAttributes redirectAttributes, @RequestParam("image") MultipartFile multipartFile) throws IOException{
-        System.out.println(multipartFile.getOriginalFilename());
+        //System.out.println(multipartFile.getOriginalFilename());
         if(!multipartFile.isEmpty()){
             System.out.println(multipartFile.getOriginalFilename());
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
