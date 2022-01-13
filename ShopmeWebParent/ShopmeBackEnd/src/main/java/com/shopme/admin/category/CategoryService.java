@@ -19,8 +19,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository repo;
 
-    public List<Category> listByPage(CategoryPageInfo pageInfo, int pageNum, String sortDir,
-                                     String keyword) {
+    public List<Category> listByPage(CategoryPageInfo pageInfo, int pageNum, String sortDir) {
         Sort sort = Sort.by("name");
 
         if (sortDir.equals("asc")) {
