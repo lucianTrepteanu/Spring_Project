@@ -1,7 +1,9 @@
 package com.shopme.common.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="products")
@@ -47,6 +49,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name="brand_id")
     private Brand brand;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductDetail> details = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -190,6 +195,22 @@ public class Product {
 
     public void setBrand(Brand brand) {
         this.brand = brand;
+    }
+
+    public List<ProductDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<ProductDetail> details) {
+        this.details = details;
+    }
+
+    public void addDetail(String name, String value) {
+        this.details.add(new ProductDetail(name, value, this));
+    }
+
+    public void addDetail(Integer id, String name, String value) {
+        this.details.add(new ProductDetail(id, name, value, this));
     }
 
     @Override

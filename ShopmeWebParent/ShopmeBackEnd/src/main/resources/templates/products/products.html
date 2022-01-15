@@ -9,7 +9,7 @@
         <h2>Manage Products</h2>
 
         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-            <a th:href="@{/products/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+            <a th:href="@{/products/new}" class="fas fa-plus-circle fa-2x icon-dark mr-2"></a>
         </th:block>
 
     </div>
@@ -78,11 +78,6 @@
                 </th:block>
 
                 <td>
-                    <a class="fas fa-file-alt fa-2x icon-green link-detail"
-                       th:href="@{'/products/detail/' + ${product.id}}"
-                       title="View details of this product"
-                    ></a>
-
                     <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
                         &nbsp;
                         <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" />
