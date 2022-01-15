@@ -28,4 +28,13 @@ public class ProductService {
             throw new Exception("Could not find any product with ID " + id);
         }
     }
+
+    public Product getProduct(String alias) throws Exception {
+        Product product = repo.findByAlias(alias);
+        if (product == null) {
+            throw new Exception("Could not find any product with alias " + alias);
+        }
+
+        return product;
+    }
 }
