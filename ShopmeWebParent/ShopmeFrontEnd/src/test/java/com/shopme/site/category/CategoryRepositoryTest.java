@@ -8,6 +8,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class CategoryRepositoryTest {
@@ -20,5 +22,12 @@ public class CategoryRepositoryTest {
         categories.forEach(category -> {
            System.out.println(category.getName() + "(" + category.isEnabled() + ")");
         });
+    }
+
+    @Test
+    public void testFindCategory(){
+        Category cat = repo.findByAliasEnabled("Smartphones");
+        System.out.println("A gasit " + cat);
+        assertThat(cat).isNotNull();
     }
 }

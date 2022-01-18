@@ -53,6 +53,12 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductDetail> details = new ArrayList<>();
 
+    public Product(){}
+
+    public Product(Integer productId) {
+        this.id = productId;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -211,6 +217,14 @@ public class Product {
 
     public void addDetail(Integer id, String name, String value) {
         this.details.add(new ProductDetail(id, name, value, this));
+    }
+
+    @Transient
+    public float getDiscountPrice() {
+        if (discountPercent > 0) {
+            return price * ((100 - discountPercent) / 100);
+        }
+        return this.price;
     }
 
     @Override

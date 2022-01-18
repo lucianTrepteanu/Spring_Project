@@ -19,9 +19,10 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @Autowired private CategoryService categoryService;
-
-    @Autowired private ControllerHelper controllerHelper;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ControllerHelper controllerHelper;
 
     @GetMapping("/c/{category_alias}")
     public String viewCategoryFirstPage(@PathVariable("category_alias") String alias,
@@ -59,6 +60,7 @@ public class ProductController {
 
             return "product/products_by_category";
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             throw new Exception("Cannot find category with alias " + alias);
         }
     }

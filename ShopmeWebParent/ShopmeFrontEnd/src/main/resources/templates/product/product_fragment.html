@@ -21,5 +21,9 @@
     </th:block>
 </div>
 
+<div th:fragment="price_fragment(productPrice)" th:remove="tag">
+    [[${CURRENCY_SYMBOL}]] [[${productPrice}]]
+</div>
+
 </body>
 </html>

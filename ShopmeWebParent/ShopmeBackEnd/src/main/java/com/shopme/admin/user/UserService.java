@@ -1,5 +1,6 @@
 package com.shopme.admin.user;
 
+import com.shopme.admin.response.ResponseMessage;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,15 +65,22 @@ public class UserService {
         return userRepo.save(user);
     }
 
+    public User edit(User user){
+        User existingUser = userRepo.findById(user.getId()).get();
+        if(user.getPassword().isEmpty()){
+            user.setPassword(existingUser.getPassword());
+        } else {
+            encodePassword(user);
+        }
+        return userRepo.save(user);
+    }
+
     public User updateAccount(User userInForm){
         User userInDB = userRepo.findById(userInForm.getId()).get();
         if(!userInForm.getPassword().isEmpty()){
             userInDB.setPassword(userInForm.getPassword());
             encodePassword(userInDB);
         }
-        //if(userInForm.getPhotos() != null){
-          //  userInDB.setPhotos(userInForm.getPhotos());
-        //}
 
         userInDB.setFirstName(userInForm.getFirstName());
         userInDB.setLastName(userInForm.getLastName());

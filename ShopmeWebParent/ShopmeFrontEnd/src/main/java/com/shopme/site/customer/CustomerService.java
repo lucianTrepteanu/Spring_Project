@@ -3,6 +3,8 @@ package com.shopme.site.customer;
 import com.shopme.common.entity.Customer;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.Date;
 public class CustomerService {
     @Autowired
     private CustomerRepository customerRepo;
+
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -33,7 +36,7 @@ public class CustomerService {
 
     public void registerCustomer(Customer customer) {
         encodePassword(customer);
-        customer.setEnabled(false);
+        customer.setEnabled(true);
         customer.setCreatedTime(new Date());
 
         customerRepo.save(customer);

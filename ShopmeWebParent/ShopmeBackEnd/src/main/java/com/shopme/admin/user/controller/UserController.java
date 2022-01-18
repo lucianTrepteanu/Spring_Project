@@ -1,6 +1,7 @@
 package com.shopme.admin.user.controller;
 
 import com.shopme.admin.FileUploadUtil;
+import com.shopme.admin.response.ResponseMessage;
 import com.shopme.admin.user.UserNotFoundException;
 import com.shopme.admin.user.UserService;
 import com.shopme.common.entity.Role;
@@ -8,13 +9,12 @@ import com.shopme.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -70,9 +70,7 @@ public class UserController {
 
     @PostMapping("/users/save")
     public String saveUser(User user, RedirectAttributes redirectAttributes, @RequestParam("image") MultipartFile multipartFile) throws IOException{
-        //System.out.println(multipartFile.getOriginalFilename());
         if(!multipartFile.isEmpty()){
-            System.out.println(multipartFile.getOriginalFilename());
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             user.setPhotos(fileName);
             User savedUser = service.save(user);
@@ -98,7 +96,7 @@ public class UserController {
             model.addAttribute("user",user);
             model.addAttribute("pageTitle","Edit user id "+id);
             model.addAttribute("listRoles",listRoles);
-            return "users/user_form";
+            return "users/user_form_edit";
         } catch (UserNotFoundException ex){
             redirectAttributes.addFlashAttribute("message",ex.getMessage());
             return "redirect:/users";
@@ -110,10 +108,9 @@ public class UserController {
         try{
             service.delete(id);
             redirectAttributes.addFlashAttribute("message", "The user with id "+id + " was deleted!");
-        } catch (UserNotFoundException ex){
-            redirectAttributes.addFlashAttribute("message",ex.getMessage());
+        } catch (UserNotFoundException ex){redirectAttributes.addFlashAttribute("message",ex.getMessage());
         }
-        return "redirect:/users";
+        return "redirect:/users/page/1?sortField=firstName&sortDir=asc";
     }
 
     @GetMapping("/users/{id}/enabled/{status}")

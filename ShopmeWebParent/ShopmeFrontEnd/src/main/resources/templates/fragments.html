@@ -114,5 +114,9 @@
     </div>
 </div>
 
+<div th:fragment="format_currency(amount)" th:remove="tag">
+    [[${CURRENCY_SYMBOL}]] [[${amount}]] [[${CURRENCY_SYMBOL}]]
+</div>
+
 </body>
 </html>

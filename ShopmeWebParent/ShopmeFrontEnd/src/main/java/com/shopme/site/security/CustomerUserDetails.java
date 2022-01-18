@@ -46,7 +46,7 @@ public class CustomerUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return customer.isEnabled();
+        return true;
     }
 
     public String getFullName() {
