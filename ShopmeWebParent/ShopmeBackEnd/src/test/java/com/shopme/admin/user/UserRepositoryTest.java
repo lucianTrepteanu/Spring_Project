@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@Rollback(false)
+@Rollback(true)
 public class UserRepositoryTest {
     @Autowired
     private UserRepository repo;
@@ -38,7 +38,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testCreateNewUserWithTwoRoles(){
-        User userNarcis = new User("narci6ix@gmail.com","password","Narcis","Trepteanu");
+        User userNarcis = new User("somebody@gmail.com","password","Narcis","Trepteanu");
         Role roleEditor = new Role(3);
         Role roleAssistant = new Role(5);
         userNarcis.addRole(roleEditor);
@@ -51,7 +51,13 @@ public class UserRepositoryTest {
     @Test
     public void testListAllUsers(){
         Iterable<User> listUsers = repo.findAll();
-        listUsers.forEach(user -> System.out.println(user));
+        int counter = 0;
+        for(User it : listUsers){
+            counter ++;
+            System.out.println(it);
+        }
+        assertThat(listUsers).isNotNull();
+        assertThat(counter).isGreaterThan(0);
     }
 
     @Test
@@ -59,6 +65,7 @@ public class UserRepositoryTest {
         User user = repo.findById(1).get();
         System.out.println(user);
         assertThat(user.getId()).isGreaterThan(0);
+        assertThat(user.getId()).isEqualTo(1);
     }
 
     @Test
@@ -67,7 +74,10 @@ public class UserRepositoryTest {
         user.setEnabled(true);
         user.setEmail("lucian.trepteanu@gmail.com");
 
-        repo.save(user);
+        User savedUser = repo.save(user);
+
+        assertThat(savedUser).isNotNull();
+        assertThat(savedUser.getEmail()).isEqualTo("lucian.trepteanu@gmail.com");
     }
 
     @Test
